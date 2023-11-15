@@ -114,14 +114,21 @@ namespace WebGoatCore.Controllers
 
                 if (model.Username.Length < 5 || model.Username.Length > 20 || !usernameRegex.IsMatch(model.Username))
                 {
-                    throw new ArgumentException("Forkert brugernavn eller adgangskode");
+                    throw new ArgumentException("Ugyldig brugernavn");
                 }
 
                 var passwordRegex = new Regex(@"^([a-zA-Z0-9!?@&+-/]*$)");
 
                 if (model.Password.Length < 12 || model.Password.Length > 30 || !passwordRegex.IsMatch(model.Password))
                 {
-                    throw new ArgumentException("Forkert brugernavn eller adgangskode");
+                    throw new ArgumentException("Ugyldig adgangskode");
+                }
+
+                var emailRegex = new Regex(@"^([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$)");
+
+                if (model.Email.Length < 12 || model.Email.Length > 30 || !emailRegex.IsMatch(model.Email))
+                {
+                    throw new ArgumentException("Ugyldig email");
                 }
 
                 var addressRegex = new Regex(@"^([a-zA-Z0-9 ]*$)");

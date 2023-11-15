@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using WebGoatCore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using WebGoatCore.Models;
+using System.Text.RegularExpressions;
+using System;
 
 namespace WebGoatCore.Controllers
 {
@@ -42,6 +44,20 @@ namespace WebGoatCore.Controllers
             }
 
             var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: true);
+
+            var usernameRegex = new Regex(@"^([a-zA-Z0-9]*$)");
+
+            if (model.Username.Length < 5 || model.Username.Length > 20 || !usernameRegex.IsMatch(model.Username))
+            {
+                throw new ArgumentException("Forkert brugernavn eller adgangskode");
+            }
+
+            var passwordRegex = new Regex(@"^([a-zA-Z0-9!?@&+-/]*$)");
+
+            if (model.Password.Length < 12 || model.Password.Length > 30 || !passwordRegex.IsMatch(model.Password))
+            {
+                throw new ArgumentException("Forkert brugernavn eller adgangskode");
+            }
 
             if (result.Succeeded)
             {

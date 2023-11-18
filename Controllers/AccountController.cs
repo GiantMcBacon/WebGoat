@@ -34,6 +34,7 @@ namespace WebGoatCore.Controllers
             });
         }
 
+        // Metode til login - med input validering
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel model)
@@ -45,6 +46,7 @@ namespace WebGoatCore.Controllers
 
             var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: true);
 
+           // Input validering af username
             var usernameRegex = new Regex(@"^([a-zA-Z0-9]*$)");
 
             if (model.Username.Length < 5 || model.Username.Length > 20 || !usernameRegex.IsMatch(model.Username))
@@ -52,6 +54,7 @@ namespace WebGoatCore.Controllers
                 throw new ArgumentException("Forkert brugernavn eller adgangskode");
             }
 
+            //Input validering af password
             var passwordRegex = new Regex(@"^([a-zA-Z0-9!?@&+-/]*$)");
 
             if (model.Password.Length < 12 || model.Password.Length > 30 || !passwordRegex.IsMatch(model.Password))
@@ -97,6 +100,7 @@ namespace WebGoatCore.Controllers
             return View(new RegisterViewModel());
         }
 
+        // Metode til at oprette/registrerer en ny bruger - med input validering
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
@@ -110,6 +114,7 @@ namespace WebGoatCore.Controllers
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
+                // Input validering af username feltet
                 var usernameRegex = new Regex(@"^([a-zA-Z0-9]*$)");
 
                 if (model.Username.Length < 5 || model.Username.Length > 20 || !usernameRegex.IsMatch(model.Username))
@@ -117,6 +122,7 @@ namespace WebGoatCore.Controllers
                     throw new ArgumentException("Ugyldig brugernavn");
                 }
 
+                // Input validering af password feltet
                 var passwordRegex = new Regex(@"^([a-zA-Z0-9!?@&+-/]*$)");
 
                 if (model.Password.Length < 12 || model.Password.Length > 30 || !passwordRegex.IsMatch(model.Password))
@@ -124,6 +130,7 @@ namespace WebGoatCore.Controllers
                     throw new ArgumentException("Ugyldig adgangskode");
                 }
 
+                // Input validering af emial feltet
                 var emailRegex = new Regex(@"^([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$)");
 
                 if (model.Email.Length < 12 || model.Email.Length > 30 || !emailRegex.IsMatch(model.Email))
@@ -131,6 +138,7 @@ namespace WebGoatCore.Controllers
                     throw new ArgumentException("Ugyldig email");
                 }
 
+                // Input validering af adresse feltet
                 var addressRegex = new Regex(@"^([a-zA-Z0-9 ]*$)");
 
                 if (model.Address != null)
@@ -142,6 +150,7 @@ namespace WebGoatCore.Controllers
                     }
                 }
 
+                // Input validering af by feltet
                 var cityRegex = new Regex(@"^([a-zA-Z- ]*$)");
 
                 if (model.City != null)
@@ -152,6 +161,7 @@ namespace WebGoatCore.Controllers
                     }
                 }
 
+                // Input validering af region feltet
                 var regionRegex = new Regex(@"^([a-zA-Z- ]*$)");
 
                 if (model.Region != null)
@@ -162,6 +172,7 @@ namespace WebGoatCore.Controllers
                     }
                 }
 
+                // Input validering af postnummer feltet
                 var postalCodeRegex = new Regex(@"^([0-9]*$)");
 
                 if (model.PostalCode != null)
@@ -172,6 +183,7 @@ namespace WebGoatCore.Controllers
                     }
                 }
 
+                // Input validering af land feltet
                 var contryRegex = new Regex(@"^([a-zA-Z- ]*$)");
 
                 if (model.Country != null)
@@ -182,6 +194,7 @@ namespace WebGoatCore.Controllers
                     }
                 }
 
+                // Input validering af firma navn feltet
                 var companyNameRegex = new Regex(@"^([a-zA-Z0-9- ]*$)");
 
                 if (model.CompanyName != null)

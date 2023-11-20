@@ -21,12 +21,16 @@ namespace WebGoat.NET.Domain_primitives
 
         private void IsCountryValid(string country)
         {
-            var countryRegex = new Regex(@"^([a-zA-Z0-9]*$)");
-
-            if (country.Length < 5 || country.Length > 20 || !countryRegex.IsMatch(country))
+            var contryRegex = new Regex(@"^([a-zA-Z- ]*$)");
+         
+            if (country != null)
             {
-                throw new ArgumentException("Ugyldig land");
+                if (country.Length < 3 || country.Length > 30 || !contryRegex.IsMatch(country))
+                {
+                    throw new ArgumentException("Ugyldigt land");
+                }
             }
+
         }
     }
 }

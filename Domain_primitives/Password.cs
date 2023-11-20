@@ -23,12 +23,9 @@ namespace WebGoat.NET.Domain_primitives
             // Password regex er opdateret
             var passwordRegex = new Regex(@"^([a-zA-Z0-9!?@&+-/]*$)");
 
-            if (password != null)
+            if (password.Length < 12 || password.Length > 30 || !passwordRegex.IsMatch(password))
             {
-                if (password.Length < 3 || password.Length > 30 || !passwordRegex.IsMatch(password))
-                {
-                    throw new ArgumentException("Ugyldigt password");
-                }
+                throw new ArgumentException("Ugyldig adgangskode");
             }
         }
     }

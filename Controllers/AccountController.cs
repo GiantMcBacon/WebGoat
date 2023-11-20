@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using WebGoatCore.Models;
 using System.Text.RegularExpressions;
 using System;
+using WebGoat.NET.Domain_primitives;
 
 namespace WebGoatCore.Controllers
 {
@@ -114,100 +115,23 @@ namespace WebGoatCore.Controllers
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
-                // Input validering af username feltet
-                var usernameRegex = new Regex(@"^([a-zA-Z0-9]*$)");
+                Username username = new Username(model.Username);
+                Email email = new Email(model.Email);
+                CompanyName companyName = new CompanyName(model.CompanyName);
+                Password password = new Password(model.Password);
+                ConfirmPassword confirmPassword = new ConfirmPassword(model.ConfirmedPassword);
+                Address address = new Address(model.Address);
+                City city = new City(model.City);
+                Region region = new Region(model.Region);
+                PostalCode postalCode = new PostalCode(model.PostalCode);
+                Country country = new Country(model.Country);
 
-                if (model.Username.Length < 5 || model.Username.Length > 20 || !usernameRegex.IsMatch(model.Username))
-                {
-                    throw new ArgumentException("Ugyldig brugernavn");
-                }
 
-                // Input validering af password feltet
-                var passwordRegex = new Regex(@"^([a-zA-Z0-9!?@&+-/]*$)");
-
-                if (model.Password.Length < 12 || model.Password.Length > 30 || !passwordRegex.IsMatch(model.Password))
-                {
-                    throw new ArgumentException("Ugyldig adgangskode");
-                }
-
-                // Input validering af emial feltet
-                var emailRegex = new Regex(@"^([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$)");
-
-                if (model.Email.Length < 12 || model.Email.Length > 30 || !emailRegex.IsMatch(model.Email))
-                {
-                    throw new ArgumentException("Ugyldig email");
-                }
-
-                // Input validering af adresse feltet
-                var addressRegex = new Regex(@"^([a-zA-Z0-9 ]*$)");
-
-                if (model.Address != null)
-                {
-
-                    if (model.Address.Length < 3 || model.Address.Length > 30 || !addressRegex.IsMatch(model.Address))
-                    {
-                        throw new ArgumentException("Ugyldig adresse");
-                    }
-                }
-
-                // Input validering af by feltet
-                var cityRegex = new Regex(@"^([a-zA-Z- ]*$)");
-
-                if (model.City != null)
-                {
-                    if (model.City.Length < 3 || model.City.Length > 30 || !cityRegex.IsMatch(model.City))
-                    {
-                        throw new ArgumentException("Ugyldig by");
-                    }
-                }
-
-                // Input validering af region feltet
-                var regionRegex = new Regex(@"^([a-zA-Z- ]*$)");
-
-                if (model.Region != null)
-                {
-                    if (model.Region.Length < 3 || model.Region.Length > 30 || !regionRegex.IsMatch(model.Region))
-                    {
-                        throw new ArgumentException("Ugyldig region");
-                    }
-                }
-
-                // Input validering af postnummer feltet
-                var postalCodeRegex = new Regex(@"^([0-9]*$)");
-
-                if (model.PostalCode != null)
-                {
-                    if (model.PostalCode.Length < 3 || model.PostalCode.Length > 12 || !postalCodeRegex.IsMatch(model.PostalCode))
-                    {
-                        throw new ArgumentException("Ugyldigt postnummer");
-                    }
-                }
-
-                // Input validering af land feltet
-                var contryRegex = new Regex(@"^([a-zA-Z- ]*$)");
-
-                if (model.Country != null)
-                {
-                    if ( model.Country.Length < 3 || model.Country.Length > 30 || !contryRegex.IsMatch(model.Country))
-                    {
-                        throw new ArgumentException("Ugyldigt land");
-                    }
-                }
-
-                // Input validering af firma navn feltet
-                var companyNameRegex = new Regex(@"^([a-zA-Z0-9- ]*$)");
-
-                if (model.CompanyName != null)
-                {
-                    if (model.CompanyName.Length < 3 || model.CompanyName.Length > 30 || !companyNameRegex.IsMatch(model.CompanyName))
-                    {
-                        throw new ArgumentException("Ugyldigt firmanavn");
-                    }
-                }
+                RegisterUser registerUser = new RegisterUser(username, email, companyName, password, confirmPassword, address, city, region, postalCode, country);
 
                 if (result.Succeeded)
                 {
-                    _customerRepository.CreateCustomer(model.CompanyName, model.Username, model.Address, model.City, model.Region, model.PostalCode, model.Country);
+                    _customerRepository.CreateCustomer(registerUser);
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");

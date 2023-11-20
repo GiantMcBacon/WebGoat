@@ -20,11 +20,14 @@ namespace WebGoat.NET.Domain_primitives
 
         private void IsCityValid(string Cy)
         {
-            var cityRegex = new Regex(@"^([a-zA-Z0-9]*$)");
+            var cityRegex = new Regex(@"^([a-zA-Z- ]*$)");
 
-            if (city.Length < 5 || city.Length > 20 || !cityRegex.IsMatch(city))
+            if (city != null)
             {
-                throw new ArgumentException("Ugyldig by");
+                if (city.Length < 3 || city.Length > 30 || !cityRegex.IsMatch(city))
+                {
+                    throw new ArgumentException("Ugyldig by");
+                }
             }
         }
     }

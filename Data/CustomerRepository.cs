@@ -33,21 +33,28 @@ namespace WebGoatCore.Data
         //TODO: Add try/catch logic
         public string CreateCustomer(RegisterUser registeruser)
         {
-            var customerId = GenerateCustomerId(registeruser.GetCompanyName());
-            var customer = new Customer()
+            try
             {
-                CompanyName = registeruser.GetCompanyName(),
-                CustomerId = customerId,
-                ContactName = registeruser.GetUsername(),
-                Address = registeruser.GetAddress(),
-                City = registeruser.GetCity(),
-                Region = registeruser.GetRegion(),
-                PostalCode = registeruser.GetPostalCode(),
-                Country = registeruser.GetCountry(),
-            };
-            _context.Customers.Add(customer);
-            _context.SaveChanges();
-            return customerId;
+                var customerId = GenerateCustomerId(registeruser.GetCompanyName());
+                var customer = new Customer()
+                {
+                    CompanyName = registeruser.GetCompanyName(),
+                    CustomerId = customerId,
+                    ContactName = registeruser.GetUsername(),
+                    Address = registeruser.GetAddress(),
+                    City = registeruser.GetCity(),
+                    Region = registeruser.GetRegion(),
+                    PostalCode = registeruser.GetPostalCode(),
+                    Country = registeruser.GetCountry(),
+                };
+                _context.Customers.Add(customer);
+                _context.SaveChanges();
+                return customerId;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Brugeren blev ikke oprettet");
+            }
         }
 
         public bool CustomerIdExists(string customerId)

@@ -101,7 +101,7 @@ namespace WebGoatCore.Controllers
             return View(new RegisterViewModel());
         }
 
-        // Metode til at oprette/registrerer en ny bruger - med input validering
+        // Metode til at oprette/registrerer en ny bruger
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
@@ -115,18 +115,20 @@ namespace WebGoatCore.Controllers
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
+                // Oprettelse af objekter af alle domæne primitiverne
                 Username username = new Username(model.Username);
                 Email email = new Email(model.Email);
                 CompanyName companyName = new CompanyName(model.CompanyName);
                 Password password = new Password(model.Password);
                 ConfirmPassword confirmPassword = new ConfirmPassword(model.ConfirmedPassword);
+                // Addess, City, Region, PostalCode og Country må være null
                 Address address = new Address(model.Address);
                 City city = new City(model.City);
                 Region region = new Region(model.Region);
                 PostalCode postalCode = new PostalCode(model.PostalCode);
                 Country country = new Country(model.Country);
 
-
+                // Oprettelse af et objekt af registerUser, hvor vi smider alle domæne primitiv objekterne ind i
                 RegisterUser registerUser = new RegisterUser(username, email, companyName, password, confirmPassword, address, city, region, postalCode, country);
 
                 if (result.Succeeded)

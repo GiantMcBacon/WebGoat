@@ -1,4 +1,6 @@
-﻿namespace WebGoat.NET.Domain_primitives
+﻿using System;
+
+namespace WebGoat.NET.Domain_primitives
 {
     public class RegisterUser
     {
@@ -15,11 +17,12 @@
 
         public RegisterUser(Username username, Email email, CompanyName companyName, Password password, ConfirmPassword confirmPassword, Address address, City city, Region region, PostalCode postalCode, Country country)
         {
-            _username = username;
-            _email = email;
-            _companyName = companyName;
-            _password = password;
-            _confirmPassword = confirmPassword;
+            // Hvis username ikke er null så sætte username = _username, hvis username er null kaster den exceptionen
+            _username =  username ?? throw new Exception($"{nameof(username)} cannot be null");
+            _email = email ?? throw new Exception($"{nameof(email)} cannot be null"); ;
+            _companyName = companyName ?? throw new Exception($"{nameof(companyName)} cannot be null"); ;
+            _password = password ?? throw new Exception($"{nameof(password)} cannot be null"); ;
+            _confirmPassword = confirmPassword ?? throw new Exception($"{nameof(confirmPassword)} cannot be null"); ;
             _address = address;
             _city = city;
             _region = region;
@@ -27,6 +30,9 @@
             _country = country;
         }
 
+        //private bool IsNotNull(object obj) {
+        //    return obj != null;
+        //}
         public string GetUsername()
         {
             return _username.GetValue();

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34024.191
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebGoat.NET", "WebGoatNET\WebGoat.NET.csproj", "{7BB00AE6-AE75-42AE-8698-F36ABAA42131}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebGoatTestProjekt", "WebGoatTestProjekt\WebGoatTestProjekt.csproj", "{C9A8DEC7-AAB5-44A6-B1A4-DB7580879721}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7BB00AE6-AE75-42AE-8698-F36ABAA42131}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BB00AE6-AE75-42AE-8698-F36ABAA42131}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BB00AE6-AE75-42AE-8698-F36ABAA42131}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BB00AE6-AE75-42AE-8698-F36ABAA42131}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9A8DEC7-AAB5-44A6-B1A4-DB7580879721}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9A8DEC7-AAB5-44A6-B1A4-DB7580879721}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9A8DEC7-AAB5-44A6-B1A4-DB7580879721}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9A8DEC7-AAB5-44A6-B1A4-DB7580879721}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2C002521-19E9-451F-A6CB-B41BFD5CC1B8}
+	EndGlobalSection
+EndGlobal

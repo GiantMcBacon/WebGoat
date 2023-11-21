@@ -4,30 +4,30 @@ using Xunit.Sdk;
 
 namespace WebGoatTestProjekt
 {
-    public class UsernameTest
+    public class PasswordTest
     {
-        // Tester input valideringen af brugernavn - tester at brugernavnet er gyldigt
+        // Tester input valideringen af passwordet - tester at passwordet er gyldigt
         [Theory]
-        [InlineData("test123")]
-        [InlineData("DetteErEtBrugernavn")]
-        public void UsernameIsValidTest(string validUsername)
+        [InlineData("test0123456789")]
+        [InlineData("Password!123")]
+        public void PasswordIsValidTest(string validPassword)
         {
             //Act
-            Username username = new Username(validUsername);
+            Password password = new Password(validPassword);
 
             //Assert
-            Assert.Equal(validUsername, username.GetValue());
+            Assert.Equal(validPassword, password.GetValue());
         }
 
-        // Tester input valideringen af brugernavn - tester at den smider en exception ved ugydligt brugernavn
+        // Tester input valideringen af password - tester at den smider en exception ved ugydligt password
         [Theory]
         [InlineData("test")]
-        [InlineData("DetHerErEtMegetLangBrugernavnSomOverskriderMax")]
-        [InlineData("UgyldgigtBrugernavn!")]
-        public void UsernameIsIndvalid_throwsException(string invalidUsername)
+        [InlineData("DetHerErEtMegetLangPasswordSomOverskriderMax")]
+        [InlineData("UgyldgigtPassword#;")]
+        public void PasswordIsIndvalid_throwsException(string invalidPassword)
         {
             // Arrange, Act & Assert
-            Assert.Throws<ArgumentException>(() => new Username(invalidUsername));
+            Assert.Throws<ArgumentException>(() => new Password(invalidPassword));
         }
     }
 }

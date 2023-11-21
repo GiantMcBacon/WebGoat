@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using WebGoatCore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using WebGoatCore.Models;
+using System.Text.RegularExpressions;
+using System;
+using WebGoat.NET.Domain_primitives;
 
 namespace WebGoatCore.Controllers
 {
@@ -32,6 +35,7 @@ namespace WebGoatCore.Controllers
             });
         }
 
+        // Metode til login - med input validering
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel model)
@@ -42,6 +46,22 @@ namespace WebGoatCore.Controllers
             }
 
             var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: true);
+
+           // Input validering af username
+            var usernameRegex = new Regex(@"^([a-zA-Z0-9]*$)");
+
+            if (model.Username.Length < 5 || model.Username.Length > 20 || !usernameRegex.IsMatch(model.Username))
+            {
+                throw new ArgumentException("Forkert brugernavn eller adgangskode");
+            }
+
+            //Input validering af password
+            var passwordRegex = new Regex(@"^([a-zA-Z0-9!?@&+-/]*$)");
+
+            if (model.Password.Length < 12 || model.Password.Length > 30 || !passwordRegex.IsMatch(model.Password))
+            {
+                throw new ArgumentException("Forkert brugernavn eller adgangskode");
+            }
 
             if (result.Succeeded)
             {
@@ -81,6 +101,7 @@ namespace WebGoatCore.Controllers
             return View(new RegisterViewModel());
         }
 
+        // Metode til at oprette/registrerer en ny bruger
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
@@ -93,9 +114,26 @@ namespace WebGoatCore.Controllers
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
+
+                // Oprettelse af objekter af alle domæne primitiverne
+                Username username = new Username(model.Username);
+                Email email = new Email(model.Email);
+                CompanyName companyName = new CompanyName(model.CompanyName);
+                Password password = new Password(model.Password);
+                ConfirmPassword confirmPassword = new ConfirmPassword(model.ConfirmedPassword);
+                // Addess, City, Region, PostalCode og Country må være null
+                Address address = new Address(model.Address);
+                City city = new City(model.City);
+                Region region = new Region(model.Region);
+                PostalCode postalCode = new PostalCode(model.PostalCode);
+                Country country = new Country(model.Country);
+
+                // Oprettelse af et objekt af registerUser, hvor vi smider alle domæne primitiv objekterne ind i
+                RegisterUser registerUser = new RegisterUser(username, email, companyName, password, confirmPassword, address, city, region, postalCode, country);
+
                 if (result.Succeeded)
                 {
-                    _customerRepository.CreateCustomer(model.CompanyName, model.Username, model.Address, model.City, model.Region, model.PostalCode, model.Country);
+                    _customerRepository.CreateCustomer(registerUser);
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");

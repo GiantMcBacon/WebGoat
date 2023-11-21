@@ -1,6 +1,7 @@
 ﻿using WebGoatCore.Models;
 using System;
 using System.Linq;
+using WebGoat.NET.Domain_primitives;
 
 namespace WebGoatCore.Data
 {
@@ -30,23 +31,30 @@ namespace WebGoatCore.Data
         }
 
         //TODO: Add try/catch logic
-        public string CreateCustomer(string companyName, string contactName, string? address, string? city, string? region, string? postalCode, string? country)
+        public string CreateCustomer(RegisterUser registeruser)
         {
-            var customerId = GenerateCustomerId(companyName);
-            var customer = new Customer()
+            try
             {
-                CompanyName = companyName,
-                CustomerId = customerId,
-                ContactName = contactName,
-                Address = address,
-                City = city,
-                Region = region,
-                PostalCode = postalCode,
-                Country = country
-            };
-            _context.Customers.Add(customer);
-            _context.SaveChanges();
-            return customerId;
+                var customerId = GenerateCustomerId(registeruser.GetCompanyName());
+                var customer = new Customer()
+                {
+                    CompanyName = registeruser.GetCompanyName(),
+                    CustomerId = customerId,
+                    ContactName = registeruser.GetUsername(),
+                    Address = registeruser.GetAddress(),
+                    City = registeruser.GetCity(),
+                    Region = registeruser.GetRegion(),
+                    PostalCode = registeruser.GetPostalCode(),
+                    Country = registeruser.GetCountry(),
+                };
+                _context.Customers.Add(customer);
+                _context.SaveChanges();
+                return customerId;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Brugeren blev ikke oprettet");
+            }
         }
 
         public bool CustomerIdExists(string customerId)
